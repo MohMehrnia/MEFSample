@@ -19,15 +19,18 @@ namespace SampleMEF.Main
         {
             var executableLocation = Assembly.GetEntryAssembly().Location;
             var path = Path.Combine(Path.GetDirectoryName(executableLocation), "Plugins");
-            var assemblies = Directory
-                        .GetFiles(path, "*.dll", SearchOption.AllDirectories)
-                        .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
-                        .ToList();
-            var configuration = new ContainerConfiguration()
-                .WithAssemblies(assemblies);
-            using (var container = configuration.CreateContainer())
+            if (Directory.Exists(path))
             {
-                MessageSenders = container.GetExports<IMessageSender>();
+                var assemblies = Directory
+                            .GetFiles(path, "*.dll", SearchOption.AllDirectories)
+                            .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
+                            .ToList();
+                var configuration = new ContainerConfiguration()
+                    .WithAssemblies(assemblies);
+                using (var container = configuration.CreateContainer())
+                {
+                    MessageSenders = container.GetExports<IMessageSender>();
+                }
             }
         }
 
