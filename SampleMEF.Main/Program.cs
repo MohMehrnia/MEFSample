@@ -45,9 +45,6 @@ namespace SampleMEF.Main
             var program = new Program();
             program.Run();
             Console.ReadKey();
-        }        
-
-        
-
+        }                
     }
 }
